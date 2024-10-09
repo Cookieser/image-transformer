@@ -12,6 +12,10 @@ from tqdm import tqdm
 import warnings
 warnings.filterwarnings('ignore')
 
+# The base path of the project includes the original images directory and transformed images
+# In the beginning, given these original images fold in the base_path by their dataset name e.g. mmvp
+base_path = '/Users/yupuwang/Documents/Code/image-transformer/Images'
+
 
 def to_float32(image):
     image = np.array(image, dtype=np.float32) / 255.0
@@ -230,10 +234,11 @@ for name in ['jpeg', 'brightness', 'gaussian noise', 'defocus blur']:
             param = int(param)
         else:
             param = round(param, 2)
-
-        new_folder_path = '/home/yh351/code/hallucination/Images/' + dataset + '_' + name + '_' + str(param) + '/'
+        new_folder_path = os.path.join(base_path, f"{dataset}_{name}_{param}/")
+        # new_folder_path = base_path + dataset + '_' + name + '_' + str(param) + '/'
         os.makedirs(new_folder_path, exist_ok=True)
-        folder = '/home/yh351/code/hallucination/Images/' + dataset + '/'
+        # folder = base_path + dataset + '/'
+        folder = os.path.join(base_path, dataset)
 
         for root, dirs, files in os.walk(folder):
             for file in files:
