@@ -1,24 +1,38 @@
 import numpy as np
 from PIL import Image
-from transforms_class import ContrastTransform
+from transforms_class import *
 
-# 指定电脑里图像的路径
+
+def apply_transform_and_show(image_path, transform_class, degree):
+    img = Image.open(image_path)
+    original_image = img.convert('RGB')
+
+    original_image.show(title="Original Image")
+
+    transform = transform_class()
+
+    transformed_img = transform.apply(original_image, degree)
+
+    transformed_image = Image.fromarray(np.uint8(transformed_img))
+    transformed_image.show(title="Transformed Image")
+
+
 image_path = '/Users/yupuwang/Documents/Code/image-transformer/Images/mmvp/4.jpg'
 
-# 加载图像
-img = Image.open(image_path)
+# apply_transform_and_show(image_path, ContrastTransform, degree=0.7)
 
-# 显示原始图像
-original_image = img.convert('RGB')
-original_image.show(title="Original Image")
+# apply_transform_and_show(image_path, JPEGCompressionTransform, degree=75)
 
-# 初始化 ContrastTransform 变换类
-contrast_transform = ContrastTransform()
+# apply_transform_and_show(image_path, BrightnessTransform, degree=0.1)
 
-# 应用对比度变换
-contrast_img = contrast_transform.apply(img, degree=0.7)
+# apply_transform_and_show(image_path, DefocusBlurTransform, degree=3)
 
-# 显示变换后的图像
-contrast_image = Image.fromarray(np.uint8(contrast_img))
-contrast_image.show(title="Contrast Transformed Image")
+# apply_transform_and_show(image_path, GlassBlurTransform, degree=0.5)
+
+# apply_transform_and_show(image_path, GaussianNoiseTransform, degree=0.05)
+
+# Todo: There is something wrong with this  FogTransform
+# apply_transform_and_show(image_path, FogTransform, degree=1)
+
+
 

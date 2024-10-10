@@ -25,33 +25,33 @@ def to_float32(image):
 def to_uint8(image):
     return (np.clip(image, 0, 1) * 255).astype(np.uint8)
 
-
-def disk(radius, alias_blur=0.1, dtype=np.float32):
-    if radius <= 8:
-        L = np.arange(-8, 8 + 1)
-        ksize = (3, 3)
-    else:
-        L = np.arange(-radius, radius + 1)
-        ksize = (5, 5)
-    X, Y = np.meshgrid(L, L)
-    aliased_disk = np.array((X ** 2 + Y ** 2) <= radius ** 2, dtype=dtype)
-    aliased_disk /= np.sum(aliased_disk)
-
-    # supersample disk to antialias
-    return cv2.GaussianBlur(aliased_disk, ksize=ksize, sigmaX=alias_blur)
-
-
-def plasma_fractal(mapsize=256, wibbledecay=3):
-    """
-    Generate a heightmap using diamond-square algorithm.
-    Return square 2d array, side length 'mapsize', of floats in range 0-255.
-    'mapsize' must be a power of two.
-    """
-    assert (mapsize & (mapsize - 1) == 0)
-    maparray = np.empty((mapsize, mapsize), dtype=np.float_)
-    maparray[0, 0] = 0
-    stepsize = mapsize
-    wibble = 100
+#
+# def disk(radius, alias_blur=0.1, dtype=np.float32):
+#     if radius <= 8:
+#         L = np.arange(-8, 8 + 1)
+#         ksize = (3, 3)
+#     else:
+#         L = np.arange(-radius, radius + 1)
+#         ksize = (5, 5)
+#     X, Y = np.meshgrid(L, L)
+#     aliased_disk = np.array((X ** 2 + Y ** 2) <= radius ** 2, dtype=dtype)
+#     aliased_disk /= np.sum(aliased_disk)
+#
+#     # supersample disk to antialias
+#     return cv2.GaussianBlur(aliased_disk, ksize=ksize, sigmaX=alias_blur)
+#
+#
+# def plasma_fractal(mapsize=256, wibbledecay=3):
+#     """
+#     Generate a heightmap using diamond-square algorithm.
+#     Return square 2d array, side length 'mapsize', of floats in range 0-255.
+#     'mapsize' must be a power of two.
+#     """
+#     assert (mapsize & (mapsize - 1) == 0)
+#     maparray = np.empty((mapsize, mapsize), dtype=np.float_)
+#     maparray[0, 0] = 0
+#     stepsize = mapsize
+#     wibble = 100
 
     def wibbledmean(array):
         return array / 4 + wibble * np.random.uniform(-wibble, wibble, array.shape)
@@ -89,43 +89,43 @@ def plasma_fractal(mapsize=256, wibbledecay=3):
     maparray -= maparray.min()
     return maparray / maparray.max()
 
+#
+# def gaussian_noise(x, c):
+#     x = np.array(x) / 255.
+#     return np.clip(x + np.random.normal(size=x.shape, scale=c), 0, 1) * 255
 
-def gaussian_noise(x, c):
-    x = np.array(x) / 255.
-    return np.clip(x + np.random.normal(size=x.shape, scale=c), 0, 1) * 255
-
-
-def jpeg_compression(x, c):
-    output = io.BytesIO()
-    x.save(output, 'JPEG', quality=c)
-    x = Image.open(output)
-    return x
-
-
-def brightness(x, c):
-    x = np.array(x) / 255.
-    x = sk.color.rgb2hsv(x)
-    x[:, :, 2] = np.clip(x[:, :, 2] + c, 0, 1)
-    x = sk.color.hsv2rgb(x)
-    return np.clip(x, 0, 1) * 255
+#
+# def jpeg_compression(x, c):
+#     output = io.BytesIO()
+#     x.save(output, 'JPEG', quality=c)
+#     x = Image.open(output)
+#     return x
 
 
-def contrast(x, c):
-    x = np.array(x) / 255.
-    means = np.mean(x, axis=(0, 1), keepdims=True)
-    return np.clip((x - means) * c + means, 0, 1) * 255
+# def brightness(x, c):
+#     x = np.array(x) / 255.
+#     x = sk.color.rgb2hsv(x)
+#     x[:, :, 2] = np.clip(x[:, :, 2] + c, 0, 1)
+#     x = sk.color.hsv2rgb(x)
+#     return np.clip(x, 0, 1) * 255
 
 
-def defocus_blur(x, c):
-    x = np.array(x) / 255.
-    kernel = disk(radius=c, alias_blur=0.5)
+# def contrast(x, c):
+#     x = np.array(x) / 255.
+#     means = np.mean(x, axis=(0, 1), keepdims=True)
+#     return np.clip((x - means) * c + means, 0, 1) * 255
 
-    channels = []
-    for d in range(3):
-        channels.append(cv2.filter2D(x[:, :, d], -1, kernel))
-    channels = np.array(channels).transpose((1, 2, 0))  # 3x224x224 -> 224x224x3
-
-    return np.clip(channels, 0, 1) * 255
+#
+# def defocus_blur(x, c):
+#     x = np.array(x) / 255.
+#     kernel = disk(radius=c, alias_blur=0.5)
+#
+#     channels = []
+#     for d in range(3):
+#         channels.append(cv2.filter2D(x[:, :, d], -1, kernel))
+#     channels = np.array(channels).transpose((1, 2, 0))  # 3x224x224 -> 224x224x3
+#
+#     return np.clip(channels, 0, 1) * 255
 
 
 def elastic_transform(image, c):
@@ -155,12 +155,12 @@ def elastic_transform(image, c):
     indices = np.reshape(y + dy, (-1, 1)), np.reshape(x + dx, (-1, 1)), np.reshape(z, (-1, 1))
     return np.clip(map_coordinates(image, indices, order=1, mode='reflect').reshape(shape), 0, 1) * 255
 
-
-def fog(x, c):
-    x = np.array(x) / 255.
-    max_val = x.max()
-    x += c * plasma_fractal(mapsize=x.shape[0], wibbledecay=2.0)[:x.shape[0], :x.shape[0]][..., np.newaxis]
-    return np.clip(x * max_val / (max_val + c), 0, 1) * 255
+#
+# def fog(x, c):
+#     x = np.array(x) / 255.
+#     max_val = x.max()
+#     x += c * plasma_fractal(mapsize=x.shape[0], wibbledecay=2.0)[:x.shape[0], :x.shape[0]][..., np.newaxis]
+#     return np.clip(x * max_val / (max_val + c), 0, 1) * 255
 
 
 def frost(x, c):
@@ -179,19 +179,19 @@ def frost(x, c):
 
     return np.clip(np.array(x) + c * frost, 0, 255)
 
-
-def glass_blur(x, c):
-    x = np.uint8(gaussian(np.array(x) / 255., sigma=c, channel_axis=2) * 255)
-    # locally shuffle pixels
-    for i in range(2):
-        for h in range(x.shape[0] - 1, 1, -1):
-            for w in range(x.shape[1] - 1, 1, -1):
-                dx, dy = np.random.randint(-1, 1, size=(2,))
-                h_prime, w_prime = h + dy, w + dx
-                # swap
-                x[h, w], x[h_prime, w_prime] = x[h_prime, w_prime], x[h, w]
-
-    return np.clip(gaussian(x / 255., sigma=c, channel_axis=2), 0, 1) * 255
+#
+# def glass_blur(x, c):
+#     x = np.uint8(gaussian(np.array(x) / 255., sigma=c, channel_axis=2) * 255)
+#     # locally shuffle pixels
+#     for i in range(2):
+#         for h in range(x.shape[0] - 1, 1, -1):
+#             for w in range(x.shape[1] - 1, 1, -1):
+#                 dx, dy = np.random.randint(-1, 1, size=(2,))
+#                 h_prime, w_prime = h + dy, w + dx
+#                 # swap
+#                 x[h, w], x[h_prime, w_prime] = x[h_prime, w_prime], x[h, w]
+#
+#     return np.clip(gaussian(x / 255., sigma=c, channel_axis=2), 0, 1) * 255
 
 
 dataset = 'mmvp'
