@@ -205,6 +205,7 @@ fog_range = [0.5, 2.5]
 frost_range = [0.2, 0.6]
 gn_range = [0.02, 0.1]
 gb_range = [0.2, 1]
+
 for name in ['jpeg', 'brightness', 'gaussian noise', 'defocus blur']:
     if name == 'jpeg':
         params = jpeg_range
