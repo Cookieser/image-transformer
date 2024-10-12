@@ -17,7 +17,7 @@ def apply_transform_and_show(image_path, transform_class, degree):
     transformed_image.show(title="Transformed Image")
 
 
-image_path = '/Users/yupuwang/Documents/Code/image-transformer/Images/mmvp/4.jpg'
+image_path = '../Images/mmvp/4.jpg'
 
 # apply_transform_and_show(image_path, ContrastTransform, degree=0.7)
 
@@ -30,8 +30,6 @@ image_path = '/Users/yupuwang/Documents/Code/image-transformer/Images/mmvp/4.jpg
 # apply_transform_and_show(image_path, GlassBlurTransform, degree=0.5)
 
 # apply_transform_and_show(image_path, GaussianNoiseTransform, degree=0.05)
-
-
 
 
 # apply_transform_and_show(image_path, ElasticTransform, degree=0.03)
