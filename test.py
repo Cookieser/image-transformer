@@ -31,8 +31,12 @@ image_path = '/Users/yupuwang/Documents/Code/image-transformer/Images/mmvp/4.jpg
 
 # apply_transform_and_show(image_path, GaussianNoiseTransform, degree=0.05)
 
-# Todo: There is something wrong with this  FogTransform
+
+
+
+# apply_transform_and_show(image_path, ElasticTransform, degree=0.03)
+# Todo: There is something wrong with this  FrostTransform
+
 # apply_transform_and_show(image_path, FogTransform, degree=1)
 
-
-
+# apply_transform_and_show(image_path, FrostTransform, degree=1)
