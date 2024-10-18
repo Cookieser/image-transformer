@@ -93,6 +93,7 @@ class JPEGCompressionTransform(ImageTransform):
 
     def apply(self, image: Image.Image, degree: float) -> np.ndarray:
         output = io.BytesIO()
+        degree = int(degree)
         image.save(output, 'JPEG', quality=degree)
         compressed_image = Image.open(output)
         return np.array(compressed_image)

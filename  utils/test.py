@@ -33,8 +33,10 @@ image_path = '../Images/mmvp/4.jpg'
 
 
 # apply_transform_and_show(image_path, ElasticTransform, degree=0.03)
-# Todo: There is something wrong with this  FrostTransform
+
 
 # apply_transform_and_show(image_path, FogTransform, degree=1)
 
+
+# Todo: There is something wrong with this  FrostTransform
 # apply_transform_and_show(image_path, FrostTransform, degree=1)
