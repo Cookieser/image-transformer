@@ -81,7 +81,7 @@ class ContrastTransform(ImageTransform):
         super().__init__(range_min, range_max)
 
     def apply(self, image: Image.Image, degree: float) -> np.ndarray:
-        self.validate_degree(degree)
+        # self.validate_degree(degree)
         image = np.array(image) / 255.
         means = np.mean(image, axis=(0, 1), keepdims=True)
         return np.clip((image - means) * degree + means, 0, 1) * 255
@@ -92,7 +92,6 @@ class JPEGCompressionTransform(ImageTransform):
         super().__init__(range_min, range_max)
 
     def apply(self, image: Image.Image, degree: float) -> np.ndarray:
-        self.validate_degree(degree)
         output = io.BytesIO()
         image.save(output, 'JPEG', quality=degree)
         compressed_image = Image.open(output)
@@ -104,7 +103,6 @@ class BrightnessTransform(ImageTransform):
         super().__init__(range_min, range_max)
 
     def apply(self, image: Image.Image, degree: float) -> np.ndarray:
-        self.validate_degree(degree)
         image = np.array(image) / 255.
         image = sk.color.rgb2hsv(image)
         image[:, :, 2] = np.clip(image[:, :, 2] + degree, 0, 1)
@@ -117,7 +115,6 @@ class DefocusBlurTransform(ImageTransform):
         super().__init__(range_min, range_max)
 
     def apply(self, image: Image.Image, degree: float) -> np.ndarray:
-        self.validate_degree(degree)
         image = np.array(image) / 255.
         kernel = disk(radius=degree, alias_blur=0.5)
 
@@ -134,7 +131,6 @@ class FogTransform(ImageTransform):
         super().__init__(range_min, range_max)
 
     def apply(self, image: Image.Image, degree: float) -> np.ndarray:
-        self.validate_degree(degree)
         image = np.array(image) / 255.
         max_val = image.max()
         # Adjust the map_size to the nearest power of two
@@ -150,7 +146,6 @@ class GlassBlurTransform(ImageTransform):
         super().__init__(range_min, range_max)
 
     def apply(self, image: Image.Image, degree: float) -> np.ndarray:
-        self.validate_degree(degree)
         image = np.uint8(gaussian(np.array(image) / 255., sigma=degree, channel_axis=2) * 255)
         # locally shuffle pixels
         for i in range(2):
@@ -169,7 +164,6 @@ class GaussianNoiseTransform(ImageTransform):
         super().__init__(range_min, range_max)
 
     def apply(self, image: Image.Image, degree: float) -> np.ndarray:
-        self.validate_degree(degree)
         image = np.array(image) / 255.
         return np.clip(image + np.random.normal(size=image.shape, scale=degree), 0, 1) * 255
 
@@ -179,7 +173,6 @@ class ElasticTransform(ImageTransform):
         super().__init__(range_min, range_max)
 
     def apply(self, image: Image.Image, degree: float) -> np.ndarray:
-        self.validate_degree(degree)
         params = (np.array(image).shape[0] * degree, np.array(image).shape[0] * 0.01, np.array(image).shape[0] * 0.02)
 
         image = np.array(image, dtype=np.float32) / 255.
@@ -212,7 +205,6 @@ class FrostTransform(ImageTransform):
         super().__init__(range_min, range_max)
 
     def apply(self, image: Image.Image, degree: float) -> np.ndarray:
-        self.validate_degree(degree)
         idx = np.random.randint(5)
         filename = [resource_filename(__name__, 'frost/frost1.png'),
                     resource_filename(__name__, 'frost/frost2.png'),

@@ -98,7 +98,7 @@ base_path = '/Users/yupuwang/Documents/Code/image-transformer/Images'
 # 定义变换类和对应的 degrees 值
 transforms_dict = {
         # Transform:(Min, Max, Step)
-        ContrastTransform: (0.4, 0.7, 0.1),
+        ContrastTransform: (0.1, 2.0, 0.1),
 
 }
 
