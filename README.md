@@ -77,7 +77,7 @@ transforms_dict = {
 
 
 
-## Parameter Range
+## The range of parameters 
 
 We use these ranges to test, and the results are shown on `result`
 
@@ -96,6 +96,20 @@ transforms_dict = {
 ```
 
 We change these values according to these results
+
+```
+transforms_dict = {
+    # Transform:(Min, Max, Step)
+    ContrastTransform: (0.9, 2.0, 0.1),
+    JPEGCompressionTransform: (50, 90, 10),
+    BrightnessTransform: (0.01, 0.06, 0.01),
+    DefocusBlurTransform: (0.1, 0.8, 0.1),
+    FogTransform: (0.1, 0.4, 0.1),
+    GlassBlurTransform: (0.01, 0.05, 0.01),
+    GaussianNoiseTransform: (0.02, 0.05, 0.01),
+    ElasticTransform: (0.01, 0.02, 0.01),
+}
+```
 
 
 
@@ -157,3 +171,5 @@ Summarize the possible transformations that may be used, as documented in `Image
 2. Write the `result_analysis` function to aggregate the impact of the same transformation at different degrees on a single image, facilitating future adjustments of the degree range.
 
 3. Adjust the degree ranges based on the existing transformations.
+
+## 10.19

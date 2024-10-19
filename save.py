@@ -29,8 +29,8 @@ def save_image(dataset, base_path, transforms):
             if not os.path.exists(folder):
                 raise ValueError(f"Folder does not exist: {folder}")
             for root, dirs, files in os.walk(folder):
-                # for file in tqdm(files, unit="file", dynamic_ncols=False):
-                for file in files:
+                for file in tqdm(files, unit="file", dynamic_ncols=False):
+                #for file in files:
                     if file.endswith(".jpg"):
                         # Open the image
                         img_path = os.path.join(root, file)
