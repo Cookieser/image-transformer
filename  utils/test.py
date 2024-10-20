@@ -17,7 +17,7 @@ def apply_transform_and_show(image_path, transform_class, degree):
     transformed_image.show(title="Transformed Image")
 
 
-image_path = '../Images/mmvp/4.jpg'
+image_path = '../Images/mmvp/6.jpg'
 
 # apply_transform_and_show(image_path, ContrastTransform, degree=0.7)
 
@@ -40,3 +40,19 @@ image_path = '../Images/mmvp/4.jpg'
 
 # Todo: There is something wrong with this  FrostTransform
 # apply_transform_and_show(image_path, FrostTransform, degree=1)
+
+
+# apply_transform_and_show(image_path, SaltAndPepperNoiseTransform, degree=0.0001)
+
+# apply_transform_and_show(image_path, PoissonNoiseTransform, degree=0.5)
+
+# apply_transform_and_show(image_path, UniformNoiseTransform, degree=0.1)
+
+# apply_transform_and_show(image_path, RotationTransform, degree=1)
+
+
+# apply_transform_and_show(image_path, MedianFilterTransform, degree=0.1)
+
+# apply_transform_and_show(image_path, GammaCorrectionTransform, degree=1)
+
+# apply_transform_and_show(image_path, LogarithmicTransform, degree=0.0001)
