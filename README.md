@@ -172,4 +172,3 @@ Summarize the possible transformations that may be used, as documented in `Image
 
 3. Adjust the degree ranges based on the existing transformations.
 
-## 10.19
