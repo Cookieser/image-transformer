@@ -107,7 +107,7 @@ class BrightnessTransform(ImageTransform):
     def apply(self, image: Image.Image, degree: float) -> np.ndarray:
         image = np.array(image) / 255.
         image = sk.color.rgb2hsv(image)
-        image[:, :, 2] = np.clip(image[:, :, 2] + degree, 0, 1)
+        image[:, :, 2] = np.clip(image[:, :, 2] + degree* 0.1, 0, 1)
         image = sk.color.hsv2rgb(image)
         return np.clip(image, 0, 1) * 255
 
@@ -273,7 +273,7 @@ class UniformNoiseTransform(ImageTransform):
         image = np.array(image) / 255.
 
         # Generate uniform noise in the range [-degree, degree]
-        noise = np.random.uniform(-degree, degree, image.shape)
+        noise = np.random.uniform(-degree*0.1, degree*0.1, image.shape)
 
         # Add the uniform noise to the image
         noisy_image = image + noise
@@ -289,7 +289,7 @@ class RotationTransform(ImageTransform):
 
     def apply(self, image: Image.Image, degree: float) -> np.ndarray:
         # Rotate the image by the specified degree
-        rotated_image = image.rotate(degree, resample=Image.BICUBIC, expand=True)
+        rotated_image = image.rotate(degree*0.1, resample=Image.BICUBIC, expand=True)
         return np.array(rotated_image)
 
 

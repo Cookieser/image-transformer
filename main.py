@@ -2,7 +2,7 @@ import argparse
 from transforms_class import *
 from result_analysis import *
 from save import *
-
+# ls | grep '^mmvp_P' | wc -l
 
 if __name__ == "__main__":
     # Set up argument parser
@@ -23,25 +23,22 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     transforms_dict = {
-        # Transform:(Min, Max, Step)
+        #Transform:(Min, Max, Step)
+        
         BrightnessTransform: (0.2, 0.58, 0.02),
         ContrastTransform: (0.9, 1.85, 0.05),
         DefocusBlurTransform: (0.2, 0.39, 0.01),
         ElasticTransform: (0.1, 0.29, 0.01),
         FogTransform: (0.1, 0.29, 0.01),
-
         GammaCorrectionTransform: (0.5, 0.69, 0.01),
-        
         GaussianNoiseTransform: (0.2, 0.39, 0.01),
         JPEGCompressionTransform: (50, 88, 2),
         
 
         MedianFilterTransform: (0.01, 0.2, 0.01),
-        PoissonNoiseTransform: (0.5, 0.9, 0.02),
+        PoissonNoiseTransform: (0.5, 0.88, 0.02),
         RotationTransform: (0.1, 2.0, 0.1),
-
-        
-        UniformNoiseTransform: (0.05, 0.23, 0.01),
+        UniformNoiseTransform: (0.05, 0.24, 0.01),
         
         # LogarithmicTransform
         # ScalingTransform_13
