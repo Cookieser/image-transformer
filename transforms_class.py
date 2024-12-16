@@ -101,7 +101,7 @@ class JPEGCompressionTransform(ImageTransform):
 
 
 class BrightnessTransform(ImageTransform):
-    def __init__(self, range_min=0.1, range_max=0.5):
+    def __init__(self, range_min=0.2, range_max=0.6):
         super().__init__(range_min, range_max)
 
     def apply(self, image: Image.Image, degree: float) -> np.ndarray:
@@ -162,20 +162,20 @@ class GlassBlurTransform(ImageTransform):
 
 
 class GaussianNoiseTransform(ImageTransform):
-    def __init__(self, range_min=0.02, range_max=0.1):
+    def __init__(self, range_min=0.2, range_max=1):
         super().__init__(range_min, range_max)
 
     def apply(self, image: Image.Image, degree: float) -> np.ndarray:
         image = np.array(image) / 255.
-        return np.clip(image + np.random.normal(size=image.shape, scale=degree), 0, 1) * 255
+        return np.clip(image + np.random.normal(size=image.shape, scale=degree*0.1), 0, 1) * 255
 
 
 class ElasticTransform(ImageTransform):
-    def __init__(self, range_min=0.01, range_max=0.05):
+    def __init__(self, range_min=0.1, range_max=0.5):
         super().__init__(range_min, range_max)
 
     def apply(self, image: Image.Image, degree: float) -> np.ndarray:
-        params = (np.array(image).shape[0] * degree, np.array(image).shape[0] * 0.01, np.array(image).shape[0] * 0.02)
+        params = (np.array(image).shape[0] * degree * 0.1, np.array(image).shape[0] * 0.01, np.array(image).shape[0] * 0.02)
 
         image = np.array(image, dtype=np.float32) / 255.
         shape = image.shape
